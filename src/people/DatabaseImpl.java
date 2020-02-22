@@ -11,6 +11,7 @@ import java.util.List;
 public class DatabaseImpl implements Database {
 	
 	String name;
+	String fileName;
 	List<Person> p_list;
 	
 	public DatabaseImpl(String name) {
@@ -21,6 +22,7 @@ public class DatabaseImpl implements Database {
 	public DatabaseImpl(String name, String fileName) {
 		this.name = name;
 		p_list = new ArrayList<Person>();
+		this.fileName = fileName;
 		
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(fileName));
@@ -64,7 +66,7 @@ public class DatabaseImpl implements Database {
 	}
 
 	@Override
-	public boolean save(String fileName) {
+	public boolean save() {
 		String storage = name + "\n";
 		for (String s: Person.keys) {
 			storage += s + ",";
@@ -91,11 +93,13 @@ public class DatabaseImpl implements Database {
 	@Override
 	public void addPerson(Person p) {
 		p_list.add(p);
+		save();
 	}
 
 	@Override
 	public void removePerson(Person p) {
 		p_list.remove(p);
+		save();
 		
 	}
 	
