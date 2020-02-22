@@ -28,9 +28,7 @@ public class Main {
 			System.out.println("error!");
 		}
 		
-		Model model = new Model(d);
 		View view = new View(d);
-		Controller controller = new Controller(model,view,d);
 	}
 
 }
