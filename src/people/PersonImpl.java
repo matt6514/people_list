@@ -89,7 +89,7 @@ public class PersonImpl implements Person {
 
 	@Override
 	public String getItem(String key) {
-		return (info.get(key));
+		return (info.getOrDefault(key, ""));
 	}
 
 	@Override

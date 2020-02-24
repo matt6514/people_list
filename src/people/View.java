@@ -48,7 +48,7 @@ public class View extends JFrame implements ActionListener {
     //all GUI elements needed for person
     private JLabel[] person_labels;
     private JTextField[] person_textfields;
-    private JButton edit, delete;
+    private JButton edit, delete, home;
     private JLabel personTitle_label;
     private JPanel personButton_panel, personText_panel;
     
@@ -167,12 +167,18 @@ public class View extends JFrame implements ActionListener {
         
         delete = new JButton("Delete");
         edit = new JButton("Edit");
+        home = new JButton("Home");
         delete.addActionListener(this);
         edit.addActionListener(this);
+        home.addActionListener(this);
         personButton_panel = new JPanel();
-        personButton_panel.setLayout(new GridLayout(2,1));
+        personButton_panel.setLayout(new GridLayout(3,1));
         personButton_panel.add(delete);
         personButton_panel.add(edit);
+        personButton_panel.add(home);
+        
+        person_panel.add(personText_panel,BorderLayout.CENTER);
+        person_panel.add(personButton_panel,BorderLayout.SOUTH);
         
         //Construction of editPerson
         
@@ -202,6 +208,9 @@ public class View extends JFrame implements ActionListener {
         editButton_panel.setLayout(new GridLayout(1,2));
         editButton_panel.add(edit_cancel);
         editButton_panel.add(save);
+        
+        edit_panel.add(editButton_panel, BorderLayout.SOUTH);
+        edit_panel.add(editText_panel,BorderLayout.CENTER);
 	}
 
 	@Override
@@ -249,6 +258,7 @@ public class View extends JFrame implements ActionListener {
 			//button on the person screen -- changes to the home screen -- deletes selected person from database
 			if (JOptionPane.showConfirmDialog(null, "Delete " + selected_Person.getName() + "? ","WARNING",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 				type = VIEW_TYPE.FULL;
+				model.removeElement(selected_Person.getName());
 				d.removePerson(selected_Person);
 				selected_Person = null;
 				clearPerson();
@@ -261,9 +271,9 @@ public class View extends JFrame implements ActionListener {
 			selected_Person = null;
 			createAndShowGui(false);
 		} else if (e.getActionCommand().equals("Save")) {
-			//button on the edit screen -- changes to home screen -- save all changes made to selected changes
+			//button on the edit screen -- changes to home screen -- save all changes made to selected change
 			for (int i = 0; i < Person.keys.length; i++) {
-				if (!edit_textfields[i].getText().equals("")) {
+				if (!edit_textfields[i].getText().equals("") || !selected_Person.getItem(Person.keys[i]).equals("")) {
 					selected_Person.setItem(Person.keys[i], edit_textfields[i].getText());
 				}
 			}
@@ -271,8 +281,14 @@ public class View extends JFrame implements ActionListener {
 			d.addPerson(selected_Person);
 			selected_Person = null;
 			clearEditPerson();
+			type = VIEW_TYPE.FULL;
 			createAndShowGui(false);
 			
+		} else if (e.getActionCommand().equals("Home")) {
+			//button on the person screen -- changes to the home screen -- does not save changes made
+			selected_Person = null;
+			type = VIEW_TYPE.FULL;
+			createAndShowGui(false);
 		}
 		
 	}

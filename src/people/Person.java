@@ -13,7 +13,7 @@ public interface Person {
 	 * -Full Name (Notation is a space between every name, use a dash if it is part of the same name) "Name"
 	 * -Circles (Notation is to use a comma between every circle name) "Circles"
 	 * -First Place We Met "Met"
-	 * -Date of first meeting or first time I knew who they were, dd/mm/yyyy "Date"
+	 * -Date of first meeting or first time I knew who they were, dd/mm/yy "Date"
 	 * -Cell Number (703-276-1843) "Number"
 	 * -Email "Email"
 	 * Friends (Yes/No) "Friends"
