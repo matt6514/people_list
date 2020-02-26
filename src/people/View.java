@@ -227,7 +227,6 @@ public class View extends JFrame implements ActionListener {
 			String temp = newPersonNamePrompt();
 			if (temp != null) {
 				selected_Person = new PersonImpl(temp);
-				System.out.println(selected_Person.getName());
 				type = VIEW_TYPE.NEWPERSON;
 				createAndShowGui(false);
 			}
@@ -315,7 +314,6 @@ public class View extends JFrame implements ActionListener {
 	}
 	
 	private void createAndShowGui(boolean firstTime) { //displays screen according to what mode view is in
-		System.out.println(type);
 		if (type == VIEW_TYPE.FULL) { //full view means home screen with display of all names in database
 			setTitle("People");
 			if (firstTime) {
