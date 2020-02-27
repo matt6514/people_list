@@ -89,7 +89,6 @@ public class View extends JFrame implements ActionListener {
 		
 		// Construction of Full Person Panel
 		
-		
 		list = new JList(model);
 		panel = new JScrollPane(list);
 		choose_Person = new JButton("Select");
@@ -111,7 +110,7 @@ public class View extends JFrame implements ActionListener {
 		
 		type = VIEW_TYPE.FULL;
 		
-		createAndShowGui(true);
+		createAndShowGui(VIEW_TYPE.FULL,true);
 		
 		//Construction of newPersonPanel
 
@@ -218,27 +217,22 @@ public class View extends JFrame implements ActionListener {
 		JButton button = (JButton) e.getSource();
 		if (button.getText().equals("Select")) {
 			//button on home screen -- changes screen to person view
-			type = VIEW_TYPE.PERSON;
 			selected_Person = d.getPerson((String) list.getSelectedValue());
-			createAndShowGui(false);
+			createAndShowGui(VIEW_TYPE.PERSON,false);
 		} else if (e.getActionCommand().equals("New Person")) {
 			//button on home screen -- changes screen to new person and initiates new person creation
-			type = VIEW_TYPE.NEWPERSON;
 			String temp = newPersonNamePrompt();
 			if (temp != null) {
 				selected_Person = new PersonImpl(temp);
-				type = VIEW_TYPE.NEWPERSON;
-				createAndShowGui(false);
+				createAndShowGui(VIEW_TYPE.NEWPERSON,false);
 			}
 		}  else if (e.getActionCommand().equals("Cancel") && type == VIEW_TYPE.NEWPERSON) {
 			//button on new person screen -- changes back to home screen and delete information on person
-			type = VIEW_TYPE.FULL;
 			selected_Person = null;
 			clearNewPerson();
-			createAndShowGui(false);
+			createAndShowGui(VIEW_TYPE.FULL,false);
 		} else if (e.getActionCommand().equals("Add")) {
 			//button on new person screen -- changes back to home screen and add person to database
-			type = VIEW_TYPE.FULL;
 			for (int i = 0; i < Person.keys.length; i++) {
 				if (!newPerson_textfields[i].getText().equals("")) {
 					selected_Person.setItem(Person.keys[i], newPerson_textfields[i].getText());
@@ -248,27 +242,24 @@ public class View extends JFrame implements ActionListener {
 			model.addElement(selected_Person.getName());
 			selected_Person = null;
 			clearNewPerson();
-			createAndShowGui(false);
+			createAndShowGui(VIEW_TYPE.FULL,false);
 		} else if (e.getActionCommand().equals("Edit")) {
 			//button on the person screen -- changes to edit person screen
-			type = VIEW_TYPE.EDITPERSON;
-			createAndShowGui(false);
+			createAndShowGui(VIEW_TYPE.EDITPERSON,false);
 		} else if (e.getActionCommand().equals("Delete")) {
 			//button on the person screen -- changes to the home screen -- deletes selected person from database
 			if (JOptionPane.showConfirmDialog(null, "Delete " + selected_Person.getName() + "? ","WARNING",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-				type = VIEW_TYPE.FULL;
 				model.removeElement(selected_Person.getName());
 				d.removePerson(selected_Person);
 				selected_Person = null;
 				clearPerson();
-				createAndShowGui(false);
+				createAndShowGui(VIEW_TYPE.FULL,false);
 			}
 		} else if (e.getActionCommand().equals("Cancel") && type == VIEW_TYPE.EDITPERSON) {
 			//button on the edit screen -- changes to the home screen -- clears edit
 			clearEditPerson();
-			type = VIEW_TYPE.EDITPERSON;
 			selected_Person = null;
-			createAndShowGui(false);
+			createAndShowGui(VIEW_TYPE.EDITPERSON,false);
 		} else if (e.getActionCommand().equals("Save")) {
 			//button on the edit screen -- changes to home screen -- save all changes made to selected change
 			for (int i = 0; i < Person.keys.length; i++) {
@@ -280,14 +271,12 @@ public class View extends JFrame implements ActionListener {
 			d.addPerson(selected_Person);
 			selected_Person = null;
 			clearEditPerson();
-			type = VIEW_TYPE.FULL;
-			createAndShowGui(false);
+			createAndShowGui(VIEW_TYPE.FULL,false);
 			
 		} else if (e.getActionCommand().equals("Home")) {
 			//button on the person screen -- changes to the home screen -- does not save changes made
 			selected_Person = null;
-			type = VIEW_TYPE.FULL;
-			createAndShowGui(false);
+			createAndShowGui(VIEW_TYPE.FULL,false);
 		}
 		
 	}
@@ -313,7 +302,8 @@ public class View extends JFrame implements ActionListener {
 		return text;
 	}
 	
-	private void createAndShowGui(boolean firstTime) { //displays screen according to what mode view is in
+	private void createAndShowGui(VIEW_TYPE t, boolean firstTime) { //displays screen according to what mode view is in
+		type = t;
 		if (type == VIEW_TYPE.FULL) { //full view means home screen with display of all names in database
 			setTitle("People");
 			if (firstTime) {
