@@ -262,6 +262,7 @@ public class View extends JFrame implements ActionListener {
 			createAndShowGui(VIEW_TYPE.EDITPERSON,false);
 		} else if (e.getActionCommand().equals("Save")) {
 			//button on the edit screen -- changes to home screen -- save all changes made to selected change
+			model.removeElement(selected_Person.getName());
 			for (int i = 0; i < Person.keys.length; i++) {
 				if (!edit_textfields[i].getText().equals("") || !selected_Person.getItem(Person.keys[i]).equals("")) {
 					selected_Person.setItem(Person.keys[i], edit_textfields[i].getText());
@@ -269,6 +270,7 @@ public class View extends JFrame implements ActionListener {
 			}
 			d.removePerson(selected_Person);
 			d.addPerson(selected_Person);
+			model.addElement(selected_Person.getName());
 			selected_Person = null;
 			clearEditPerson();
 			createAndShowGui(VIEW_TYPE.FULL,false);
@@ -349,6 +351,18 @@ public class View extends JFrame implements ActionListener {
 			repaint();
 			revalidate();
 			
+		} else if (type == VIEW_TYPE.EDITPERSON) {
+			
+			setTitle("Edit Person");
+			setContentPane(edit_panel);
+			
+			for (int i = 0; i < newPerson_textfields.length; i++) {
+				edit_textfields[i].setText(selected_Person.getItem(Person.keys[i]));
+			}
+			
+			pack();
+			repaint();
+			revalidate();
 		}
 	}
 	
